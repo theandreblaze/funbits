@@ -1,47 +1,60 @@
 #![allow(unused)]
 
-
-use std::{env, fs::File, io::Read};
 use std::collections::HashMap;
-
-
-
+use std::{env, fs::File, io::Read};
 
 fn main() {
     let args = env::args().collect::<Vec<_>>();
-    let mut filename: File = File::open(&args[1]).expect("failed to open provided file by name");
+    let mut file: File = File::open(&args[1]).expect("failed to open provided file by name");
     let command: &String = &args[2];
-    let mut filebuf: Vec<u8> = vec![];
-    let mut char_counter: HashMap<String, i32> = HashMap::new();
+   
 
     match command as &str {
         "-c" => {
-            let data: usize = File::read_to_end(&mut filename, &mut filebuf).unwrap();
-            println!("{:?} bytes", &data);
-        }
+            let mut filebuf: Vec<u8> = vec![];
+            let data: usize = File::read_to_end(&mut file, &mut filebuf).unwrap();
+            println!("{:?} {:?}bytes", &data, &args[1]);
+        },
         "-m" | "--chars" => {
-
-            let temp_buf = filebuf.clone();
-            println!("{:?}", &temp_buf);
-           if let Ok(ch) = String::from_utf8(temp_buf){
-                println!("{:?}",ch.chars().count());
-            };
-
-            println!("print the character counts");
-        }
-    },
+            let mut filebuf: String = String::new();
+            file.read_to_string(&mut filebuf).unwrap();
+            println!("{:?} {:?}",filebuf.chars().count(), &args[1]);
+        },
         "-l" | "--lines" => {
-
-
-            println!("print the newline counts");
+            
+            
+            let mut filebuf: String = String::new();
+            file.read_to_string(&mut filebuf).unwrap();
+            let mut line_count: i64 = 0;
+            for line in filebuf.lines(){
+                    line_count += 1; 
+                };
+            
+            println!("{:?} {:?}",line_count, &args[1]);
         },
 
         "-L" | "--max-line-length" => {
             println!("print the maximum display width");
-        }
+            todo!("implement max-line-length");
+        },
+
         "-w" | "--words" => {
-            println!("print the word counts");
-        }
+
+            let mut filebuf: String = String::new();
+            file.read_to_string(&mut filebuf).unwrap();
+            let mut word_count: usize = 0;
+            let mut word_list: Vec<_> = vec![];
+            for line in filebuf.lines(){
+                if !line.is_empty(){
+                word_list = line.split(" ").collect::<Vec<&str>>();
+                word_count += word_list.len();
+                }
+                continue;
+            };
+
+             println!("{:?} {:?}", &word_count, &args[1]);
+        },           
+
         "--help" | "-h" => {
             println!("Display help menu");
         }
@@ -58,3 +71,20 @@ fn main() {
         _ => println!("unrecognized instruction. Please see help menu (enter ccwc --help or -h)   for use cases and flags"),
     }
 }
+
+
+
+
+
+
+#[test]
+
+fn test_non_unicode_input(){
+
+}
+
+fn test_maximum_text_file_length(){
+
+}
+
+
