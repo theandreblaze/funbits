@@ -40,6 +40,7 @@ class WC:
     )
 
     parser.add_argument(
+    #this ought to be an interesting thing to implement in python3!
     "-",
     "--files0-from",
     dest="readfrom",
