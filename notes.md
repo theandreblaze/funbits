@@ -17,13 +17,13 @@ This error occurred while trying to use `match` statements to handle the options
                 file = "text.txt"
                 with open(file, "r") as f:
                     data = f.read()
-                    print(len(data.strip().split(" ")))
+                    .....
             case chars:
                 pass
 
 And found that the first match threw the error mentioned above. 
 
-#### Simple `match` Tutorial
+#### revisiting the simple `match` Tutorial
 
 For simplicity, there are two patterns in a match statement, the subject pattern, which appears immediately after the `match` keyword, and the comparison pattern, which appears after the `case` keyword. Capture patterns are variables within the comparison pattern, literal patterns are ints, floats, strings etc within the same, and wildcards are catch-alls using the underscore.
 
@@ -34,6 +34,8 @@ For simplicity, there are two patterns in a match statement, the subject pattern
 + __As patterns__ allow the capture (into variables) of sub-patterns using the syntax: `case ["parse_as", ("json" | "yaml" | "html")] as output: result = parse_as(output)` where there are multiple options available for the expected kind out of output.
 + __Guards__ are conditionals used within `case` comparisons as a final means of ascertaining the validity of the comparison pattern. They are implemented using `if` keywords. Eg: `case ["do_action", target] if target in accepted_targets` where the `accepted_targets` capture pattern is a previously established sequence of acceptable targets to carry out this operation on.
 
+Okay, so capture patters cant be used more than once in Python match statements? Looks like I know what I'll spend this weekend researching! Knowing the Python folks, there's a good reason for this, and I'm probably spoiled from writing strongly typed languages and showering myself in all that Rust goodness.
+
 
 
 
@@ -41,12 +43,11 @@ For simplicity, there are two patterns in a match statement, the subject pattern
 
 ## enumerate(item) vs len(item)
 
-Apparently enumeration isnt zero indexed? Else, why is the a consistent discrepancy between what it returns and what the len() function returns when comparing the same strings?
+Is python's enumerate function zero indexed? Else, why is there a consistent discrepancy between what it returns and what the len() function returns when comparing the same strings?
 
 
-## Error handling and appropriate tests and error statements on each function call.
+## Error handling and appropriate tests and error statements on each function call, aka the Todos.
 
-+ nonexistent file
-+ corrupted or non-utf8 file
-+ non-string values
-+ 
++ tests and appropriate errors for nonexistent files
++ tests and appropriate errors for corrupted or non-utf8 files
++ errors for non-files and non-string values
